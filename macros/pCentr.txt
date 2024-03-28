@@ -1,0 +1,27 @@
+#-------Parameters used for analysis------
+# Event selection: 
+mZvtxCut 170 #  cut on vertex z coordinate
+
+# Track selection: 
+mNofHitsCut   10  # minimal number of hits to accept track
+mEtaCut      0.5  # maximal pseudorapidity accepted
+mPtminCut    0.1  # minimal pt used in analysis
+mDcaCut      2.0  # maximal pseudorapidity accepted
+
+# Production selection: 
+mProdGenerator Req25-UrQMD  # Production-Generator
+mInFileConvert nTr_Centr_Req25-UrQMD.root  # input file with track-to-centrality converter 
+
+#mProdGenerator Req26-DCM-QGSM-SMM  # Production-Generator
+#mInFileConvert nTr_Centr_Req26-DCM-QGSM-SMM.root  # input file with track-to-centrality converter 
+
+#mProdGenerator Req30-PHSD  # Production-Generator
+#mInFileConvert nTr_Centr_Req30-PHSD.root  # input file with track-to-centrality converter 
+
+#mProdGenerator Req32-VHLLE  // Production-Generator
+#mInFileConvert nTr_Centr_Req32-VHLLE.root  // input file with track-to-centrality converter 
+
+# Track efficiecny corrections:
+mInFileTrEff TrackRecEff.root  # input file with track reconstruction efficiecnies
+
+

@@ -1,0 +1,13 @@
+#-------Parameters used for analysis------
+# Event selection: 
+mZvtxCut 170 #  cut on vertex z coordinate
+
+# Track selection: 
+mUseMCTracks false
+mNofHitsCut   16  # minimal number of hits to accept track
+mEtaCut      1.5  # maximal pseudorapidity accepted
+mEtaGapCut   0.1  # minimal pseudorapidity accepted: abs(eta)>0.05 for mEtaGap=0.1
+mPtminCut    0.1  # minimal pt used in analysis
+mPtmaxCut    2.0  # maximal pt used in analysis
+mDcaCut      1.0  # maximal DCA accepted
+mPidPDG	     1.0  # use PDG-code to PID
