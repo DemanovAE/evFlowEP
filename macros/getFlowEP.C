@@ -238,7 +238,7 @@ void SaveGraphInFile(TFile *inFile, TFile *outFile, std::string _method ,std::ve
    graph->Write();
 }
 
-void getFlowEP(std::string iFileName="pFlowEP.root", std::string oFileName="Req25_pFlowEP_mc.root") 
+void getFlowEP(std::string iFileName="pFlowEP.root", std::string oFileName="pFlowEP_graph.root") 
 {
    gSystem->Load("libMathMore.so");
    // Get input information
