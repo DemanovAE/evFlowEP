@@ -30,26 +30,9 @@ mPidPDG      1.0  # use PDG-code to PID
 One can comment lines or parts of the line by using `#`.
 
 ## Usage
-The wagon performs event plane corrections aimed to reduce any bias coming from the non-uniform (azimuthal) detector acceptance.
-In case of the ideal azimuthal coverage of TPC and FHCal (when all sections/modules of the detector are working properly) those corrections are optional.
-But if there are some issues with azimuthal acceptance (inefficiencies, etc.), those corrections should be done.
-The EP corrections are the following:
-* Recentering;
-* Shift (or flattening).
 
-One can found more information in [this article](https://arxiv.org/pdf/nucl-ex/9805001.pdf).
+The main macro to run is in `evPlane/macros/RunAnalyses.C`.
 
-In order to do this corrections, main analysis macro (`evPlane/macros/RunAnalyses.C`) should run 3 times since the corrections are applied iteratively: first run collects information for the recentering, second run applies recentering and collects information for the shift correction, the third run applies both recentering and shift corrections. For the first run one should put `ANY` for the `mInFileEpCorr` parameter. On the second and the third run `mInFileEpCorr` should take output (`pEP.root` by default) from the previous run. 
-After each iteration, `MpdAnalysisEvent *event` stores information about event plane angles: raw angles (without any corrections) after just the first run, recentered angles (with recentering but without shift) after the second run, and shifted angles (wiht both recentering and shift) after the third run.
-Event plane resolution as a function of centrality can be calculated then using `evPlane/macros/getResolution.C` which has 2 arguments: input file (`pEP.root` by default) and output file (`pEP_resolutions.root` by default). 
+The final 
 
-If one wants to use event plane angle in their analysis wagon, it is stored in the `MpdAnalysisEvent *event`:
-```
-event.fMpdEP.GetPhiEP_FHCal_F_all() // event plane angle from FHCal N+S
-event.fMpdEP.GetPhiEP_FHCal_N_all() // event plane angle from FHCal N (eta<0)
-event.fMpdEP.GetPhiEP_FHCal_S_all() // event plane angle from FHCal S (eta>0)
-event.fMpdEP.GetPhiEP_TPC_N_all()   // event plane angle from TPC N (eta<0)
-event.fMpdEP.GetPhiEP_TPC_S_all()   // event plane angle from TPC S (eta>0)
-```
-
-similarly to `event.getCentrTPC()` to get event centrality.
+The final flow measurement result can be calculated using `evPlane/macros/getFlowEP.C`, which has 2 arguments: an input file (pFlowEP.root by default) and an output file (pFlowEP_graph.root by default).
