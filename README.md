@@ -33,6 +33,4 @@ One can comment lines or parts of the line by using `#`.
 
 The main macro to run is in `evPlane/macros/RunAnalyses.C`.
 
-The final 
-
 The final flow measurement result can be calculated using `evPlane/macros/getFlowEP.C`, which has 2 arguments: an input file (pFlowEP.root by default) and an output file (pFlowEP_graph.root by default).
