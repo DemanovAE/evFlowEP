@@ -3,7 +3,7 @@ set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/core/mpdBase
   ${CMAKE_SOURCE_DIR}/core/mpdPid
   ${CMAKE_SOURCE_DIR}/detectors/zdc
-  ${CMAKE_SOURCE_DIR}/physics
+  ${CMAKE_SOURCE_DIR}/physics/mpdPhysics
   ${CMAKE_SOURCE_DIR}/physics/evPlane
   ${CMAKE_SOURCE_DIR}/physics/evFlowEP
   ${CMAKE_SOURCE_DIR}/reconstruction/tracking/kalman
