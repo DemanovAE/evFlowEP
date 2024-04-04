@@ -377,7 +377,6 @@ bool MpdFlowEventPlane::selectEvent(MpdAnalysisEvent &event)
 
    ///// Test 
    mhVertex->Fill(mPrimaryVertex.Z());
-   mCentValerii
    mhCent->Fill(mCentValerii);
    //mhCent->Fill(event.getCentrTPC());
    mhBCent->Fill(mCent10, event.fMCEventHeader->GetB() );
