@@ -184,9 +184,9 @@ void MpdFlowEventPlane::ProcessEvent(MpdAnalysisEvent &event)
       isInitialized = true;
    }
 
-   //float cent    = event.getCentrTPC();
-   mCentValerii = GetCentValerii(event);
-   float cent    = mCentValerii;
+   float cent    = event.getCentrTPC();
+   //mCentValerii = GetCentValerii(event);
+   //float cent    = mCentValerii;
    int   centBin = GetCentBin(cent);   
    if (centBin == -1) return;
    mCent10  = ( mInitCent.at(centBin).first + mInitCent.at(centBin).second ) / 2.;
@@ -574,8 +574,9 @@ float MpdFlowEventPlane::GetCentValerii(MpdAnalysisEvent &event){
    MpdVertex *vertex = (MpdVertex *)event.fVertex->First();
    vertex->Position(mPrimaryVertex);
 
-   //if (mPrimaryVertex.Z() == 0)        return -1.;
-   if (mPrimaryVertex.Chi2() < 1)      return -1.;
+   //if (mPrimaryVertex.Z() == 0) return -1.;
+   std::cout<<vertex->GetChi2()<<std::endl;
+   if (vertex->GetChi2() < 1) return -1.;
    if (fabs(mPrimaryVertex.Z()) > 50.) return -1.;
 
    
@@ -595,12 +596,6 @@ float MpdFlowEventPlane::GetCentValerii(MpdAnalysisEvent &event){
          _Mult=_Mult+1.;
       }
    }
-
-   //UrQMD BiBi 9.2
-   Int_t fMinMult_Valerii [14]          = { 204, 172, 143, 120, 101,  84, 70, 58, 39, 24, 14,  8,  4, 1};
-   Int_t fMaxMult_Valerii [14]          = { 316, 204, 172, 143, 120, 101, 84, 70, 58, 39, 24, 14,  8, 4};
-   Float_t fMinCentPercent_Valerii [14] = { 0,     5,  10,  15,  20,  25, 30, 35, 40, 50, 60, 70, 80, 90};
-   Float_t fMaxCentPercent_Valerii [14] = { 5,    10,  15,  20,  25,  30, 35, 40, 50, 60, 70, 80, 90, 100};
 
    for(int i=0; i<14; i++){
       if (_Mult >= (float)fMinMult_Valerii[i] && _Mult < (float)fMaxMult_Valerii[i]){
