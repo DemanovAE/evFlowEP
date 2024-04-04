@@ -184,9 +184,9 @@ void MpdFlowEventPlane::ProcessEvent(MpdAnalysisEvent &event)
       isInitialized = true;
    }
 
-   float cent    = event.getCentrTPC();
-   //mCentValerii = GetCentValerii(event);
-   //float cent    = mCentValerii;
+   //float cent    = event.getCentrTPC();
+   mCentValerii  = GetCentValerii(event);
+   float cent    = mCentValerii;
    int   centBin = GetCentBin(cent);   
    if (centBin == -1) return;
    mCent10  = ( mInitCent.at(centBin).first + mInitCent.at(centBin).second ) / 2.;
@@ -575,7 +575,6 @@ float MpdFlowEventPlane::GetCentValerii(MpdAnalysisEvent &event){
    vertex->Position(mPrimaryVertex);
 
    //if (mPrimaryVertex.Z() == 0) return -1.;
-   std::cout<<vertex->GetChi2()<<std::endl;
    if (vertex->GetChi2() < 1) return -1.;
    if (fabs(mPrimaryVertex.Z()) > 50.) return -1.;
 
