@@ -184,7 +184,9 @@ void MpdFlowEventPlane::ProcessEvent(MpdAnalysisEvent &event)
       isInitialized = true;
    }
 
-   float cent    = event.getCentrTPC();
+   //float cent    = event.getCentrTPC();
+   mCentValerii = GetCentValerii(event);
+   float cent    = mCentValerii;
    int   centBin = GetCentBin(cent);   
    if (centBin == -1) return;
    mCent10  = ( mInitCent.at(centBin).first + mInitCent.at(centBin).second ) / 2.;
@@ -375,7 +377,9 @@ bool MpdFlowEventPlane::selectEvent(MpdAnalysisEvent &event)
 
    ///// Test 
    mhVertex->Fill(mPrimaryVertex.Z());
-   mhCent->Fill(event.getCentrTPC());
+   mCentValerii
+   mhCent->Fill(mCentValerii);
+   //mhCent->Fill(event.getCentrTPC());
    mhBCent->Fill(mCent10, event.fMCEventHeader->GetB() );
 
    return true;
@@ -542,4 +546,69 @@ int MpdFlowEventPlane::GetCentBin(float cent)
       return 7;
    else
       return -1;
+}
+
+float MpdFlowEventPlane::GetCentValerii(MpdAnalysisEvent &event){
+
+   // Reject empty events (UrQMD, PHSD)
+   mMCTracks = event.fMCTrack;
+   mMpdGlobalTracks = event.fMPDEvent->GetGlobalTracks();
+
+   int nTrMc = 0;
+   for (int i = 0; i < mMCTracks->GetEntriesFast(); i++) {
+      MpdMCTrack *pr  = (static_cast<MpdMCTrack *>(mMCTracks->At(i)));
+      float       eta = 0.5 * log((pr->GetP() + pr->GetPz()) / (pr->GetP() - pr->GetPz()));
+      if (pr->GetMotherId() == -1 && fabs(eta) <= mParams.mEtaCut && fabs(eta) >= mParams.mEtaGapCut / 2.) {
+         nTrMc++;
+      }
+   } // i
+
+   if (nTrMc <= 2) { // check if there're at least 2 mc particles within eta cuts
+      return -1.;
+   }
+
+   // Reject bad vertex
+   if (!event.fVertex) {
+      return -1.;
+   }
+
+   MpdVertex *vertex = (MpdVertex *)event.fVertex->First();
+   vertex->Position(mPrimaryVertex);
+
+   //if (mPrimaryVertex.Z() == 0)        return -1.;
+   if (mPrimaryVertex.Chi2() < 1)      return -1.;
+   if (fabs(mPrimaryVertex.Z()) > 50.) return -1.;
+
+   
+   float _Mult = 0.;
+   
+   for (long int i = 0; i < mMpdGlobalTracks->GetEntriesFast(); i++)
+   {
+      MpdTrack *mpdtrack = (MpdTrack *)mMpdGlobalTracks->UncheckedAt(i);
+      long int matchId = mpdtrack->GetID();
+      if(mpdtrack->GetNofHits()>16 && 
+         fabs(mpdtrack->GetEta())<0.5 && 
+         mpdtrack->GetPt()>0.15 && mpdtrack->GetCharge()!=0 && 
+         fabs(mpdtrack->GetDCAX())<1. && 
+         fabs(mpdtrack->GetDCAY())<1. && 
+         fabs(mpdtrack->GetDCAZ())<1. )
+      {
+         _Mult=_Mult+1.;
+      }
+   }
+
+   //UrQMD BiBi 9.2
+   Int_t fMinMult_Valerii [14]          = { 204, 172, 143, 120, 101,  84, 70, 58, 39, 24, 14,  8,  4, 1};
+   Int_t fMaxMult_Valerii [14]          = { 316, 204, 172, 143, 120, 101, 84, 70, 58, 39, 24, 14,  8, 4};
+   Float_t fMinCentPercent_Valerii [14] = { 0,     5,  10,  15,  20,  25, 30, 35, 40, 50, 60, 70, 80, 90};
+   Float_t fMaxCentPercent_Valerii [14] = { 5,    10,  15,  20,  25,  30, 35, 40, 50, 60, 70, 80, 90, 100};
+
+   for(int i=0; i<14; i++){
+      if (_Mult >= (float)fMinMult_Valerii[i] && _Mult < (float)fMaxMult_Valerii[i]){
+         return ( fMinCentPercent_Valerii[i] + fMaxCentPercent_Valerii[i] )/2.;
+      }
+   }
+
+   return -1.;
+
 }

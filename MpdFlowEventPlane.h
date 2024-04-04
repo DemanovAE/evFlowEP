@@ -50,13 +50,14 @@ protected:
    void SetPIDvector(std::vector<int> &_vect, MpdTrack *mpdtrack, int pdg_code);
    double GetRapidity(MpdTrack *mpdtrack, int pdg_code);
    double GetMass2(int pdg_code);
-
+   float GetCentValerii(MpdAnalysisEvent &event);
 
 private:
    // Event properties
    bool     isInitialized = false;
    TVector3 mPrimaryVertex;
 
+   float mCentValerii = -1.;
    int mCent10 = -1;
    
    std::map<int,std::pair<int,int>> mInitCent={
@@ -76,6 +77,14 @@ private:
       {6,"K"},  {7,"KP"},   {8,"KM"},
       {9,"Pr"}, {10,"PrP"}, {11,"PrM"}
    };
+
+   //UrQMD BiBi 9.2
+   Int_t fMinMult_Valerii [14]          = { 204, 172, 143, 120, 101,  84, 70, 58, 39, 24, 14,  8,  4, 1};
+   Int_t fMaxMult_Valerii [14]          = { 316, 204, 172, 143, 120, 101, 84, 70, 58, 39, 24, 14,  8, 4};
+   Float_t fMinCentPercent_Valerii [14] = { 0,     5,  10,  15,  20,  25, 30, 35, 40, 50, 60, 70, 80, 90};
+   Float_t fMaxCentPercent_Valerii [14] = { 5,    10,  15,  20,  25,  30, 35, 40, 50, 60, 70, 80, 90, 100};
+   Float_t fMinB_Valerii [14] = {    0, 3.09, 4.40, 5.46, 6.33, 7.07, 7.73, 8.33, 8.90,  9.97, 10.95, 11.83, 12.61, 13.41};
+   Float_t fMaxB_Valerii [14] = { 3.09, 4.40, 5.46, 6.33, 7.07, 7.73, 8.33, 8.90, 9.97, 10.95, 11.83, 12.61, 13.41, 14.49};
 
    std::string             mParamConfig;
    MpdFlowEventPlaneParams mParams;
