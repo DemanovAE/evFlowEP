@@ -66,9 +66,9 @@ std::pair<double,double> GetResolution(std::string _method, double _Res2, double
 
    if(_method=="v1_FHCal_RP" || _method=="v2_FHCal_RP")
    {
-      res2 = 1;
-      res  =1;
-      res_err = 1;
+      res2 = 1.;
+      res  =1.;
+      res_err = 1.;
    }
 
    if(_method=="v1_FHCal_F")
@@ -119,13 +119,13 @@ TProfile2D *TProfile2D_VnPtEta(TFile *inFile, std::string _method, std::string _
 
    for(auto &CentBin : _cent)
    {
-      TProfile2D *TPrCos = (TProfile2D*)inFile->FindObjectAny(Form("%s_%i%i_%s", _NameFLowProfile.c_str(), CentBin.first,CentBin.second, _pid.c_str()));
+      TProfile2D *TPrCos = (TProfile2D*)inFile->Get(Form("%s_%i%i_%s", _NameFLowProfile.c_str(), CentBin.first,CentBin.second, _pid.c_str()))->Clone();
       if(TPrCos==nullptr){
          std::cout<<"No TProfile2D named "<< Form("%s_%i%i_%s", _NameFLowProfile.c_str(), CentBin.first,CentBin.second, _pid.c_str()) <<" was found in the ROOT file!"<<std::endl;
          return nullptr;
       }
 
-      TProfile *TPrRes = (TProfile*)  inFile->FindObjectAny(Form("%s_%i%i", _NameResProfile.c_str(),CentBin.first,CentBin.second));
+      TProfile *TPrRes = (TProfile*)  inFile->Get(Form("%s_%i%i", _NameResProfile.c_str(),CentBin.first,CentBin.second))->Clone();
       if(TPrRes==nullptr){
          std::cout<<"No TProfile named "<< Form("%s_%i%i", _NameResProfile.c_str(),CentBin.first,CentBin.second) <<" was found in the ROOT file!"<<std::endl;
          return nullptr;

@@ -552,7 +552,15 @@ float MpdFlowEventPlane::GetCentValerii(MpdAnalysisEvent &event){
    // Reject empty events (UrQMD, PHSD)
    //mMCTracks = event.fMCTrack;
    mMpdGlobalTracks = event.fMPDEvent->GetGlobalTracks();
-   long int _Mult = mMpdGlobalTracks->GetEntriesFast();
+   double _b_mc = event.fMCEventHeader->GetB();
+
+   for(int i=0; i<14; i++){
+      if ( (float)_b_mc >= (float)fMinB_Valerii[i] && (float)_b_mc < (float)fMaxB_Valerii[i]){
+         return ( fMinCentPercent_Valerii[i] + fMaxCentPercent_Valerii[i] )/2.;
+      }
+   }
+
+   //long int _Mult = mMpdGlobalTracks->GetEntriesFast();
    /*
    int nTrMc = 0;
    for (int i = 0; i < mMCTracks->GetEntriesFast(); i++) {
@@ -596,12 +604,14 @@ float MpdFlowEventPlane::GetCentValerii(MpdAnalysisEvent &event){
          _Mult=_Mult+1.;
       }
    }
-   */
+   
    for(int i=0; i<14; i++){
       if ( (float)_Mult >= (float)fMinMult_Valerii[i] && (float)_Mult < (float)fMaxMult_Valerii[i]){
          return ( fMinCentPercent_Valerii[i] + fMaxCentPercent_Valerii[i] )/2.;
       }
    }
+   */
+
 
    return -1.;
 
