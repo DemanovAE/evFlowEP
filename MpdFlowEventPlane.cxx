@@ -195,8 +195,8 @@ void MpdFlowEventPlane::ProcessEvent(MpdAnalysisEvent &event)
 
    // Getting the event plane angle, then filling the Res2 histograms
    double Phi1EP_FHCal_F = event.fMpdEP.GetPhiEP_FHCal_F_all(); // event plane angle from FHCal N+S // Res full oproximation
-   double Phi1EP_FHCal_N = event.fMpdEP.GetPhiEP_FHCal_N_all(); // event plane angle from FHCal N (eta<0)
-   double Phi1EP_FHCal_S = event.fMpdEP.GetPhiEP_FHCal_S_all(); // event plane angle from FHCal S (eta>0)
+   double Phi1EP_FHCal_N = event.fMpdEP.GetPhiEP_FHCal_S_all(); // event plane angle from FHCal N (eta<0)
+   double Phi1EP_FHCal_S = event.fMpdEP.GetPhiEP_FHCal_N_all(); // event plane angle from FHCal S (eta>0)
    double Phi2EP_TPC_N   = event.fMpdEP.GetPhiEP_TPC_N_all();   // event plane angle from TPC N (eta<0)
    double Phi2EP_TPC_S   = event.fMpdEP.GetPhiEP_TPC_S_all();   // event plane angle from TPC S (eta>0)
    double PsiRP          = event.fMCEventHeader->GetRotZ();
@@ -267,7 +267,7 @@ void MpdFlowEventPlane::ProcessEvent(MpdAnalysisEvent &event)
       {
          mpdtrack = (MpdTrack *)mMpdGlobalTracks->UncheckedAt(i);
          long int matchId = mpdtrack->GetID();
-            //if (matchId == -1) fGoodTrack=false;
+         //if (matchId == -1) fGoodTrack=false;
          mctrack  = (static_cast<MpdMCTrack *>(mMCTracks->UncheckedAt((int)mpdtrack->GetID())));
          fGoodTrack = selectTrack(mpdtrack, (int)mctrack->GetMotherId());
          fPhi      = mpdtrack->GetPhi();
